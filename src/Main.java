@@ -3,6 +3,12 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        PythonInterpreter.execute("x=5;print(x+2)");
+        List<Token> list = new ArrayList<>();
+        String code = "print (1 + 5)";
+        list = Tokenizer.tokenize(code);
+
+
+        int ans = Parser.parseAndEvaluate(list);
+        System.out.println(ans);
     }
 }

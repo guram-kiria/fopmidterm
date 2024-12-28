@@ -7,31 +7,31 @@ public class PythonInterpreter {
 
     }
 
-    public static void execute(String code){
+    public static void execute(String code) {
         List<String> commands = new ArrayList<>();
-        for(String line : code.split(";")){
-            if(line.matches("\\s*print.*")){
+        for (String line : code.split(";")) {
+            if (line.matches("\\s*print.*")) {
                 handlePrint(line);
-            } else if(line.contains("=")){
+            } else if (line.contains("=")) {
                 handleAssignment(line);
             }
         }
     }
 
-    private static int handleArithmeticOperation(String line){
+    private static int handleArithmeticOperation(String line) {
         String[] operands;
         String operation = "";
-        if (line.contains("+")){
+        if (line.contains("+")) {
             operation = "\\+";
-        } else if(line.contains("-")){
+        } else if (line.contains("-")) {
             operation = "-";
-        } else if(line.contains("*")){
+        } else if (line.contains("*")) {
             operation = "\\*";
-        } else if(line.contains("/")){
+        } else if (line.contains("/")) {
             operation = "/";
-        }else if(line.contains("%")){
+        } else if (line.contains("%")) {
             operation = "%";
-        }else{
+        } else {
             return Integer.parseInt(line);  //TODO handle condition when input is not integer
         }
 
@@ -39,19 +39,19 @@ public class PythonInterpreter {
         String loperand = operands[0].trim();
         String roperand = operands[1].trim();
         int val1 = 0, val2 = 0;
-        if(loperand.matches("\\d+")){
+        if (loperand.matches("\\d+")) {
             val1 = Integer.parseInt(loperand);
-        } else if (variables.containsKey(loperand)){
+        } else if (variables.containsKey(loperand)) {
             val1 = variables.get(loperand);
-        } else{
+        } else {
             System.out.println("Wrong input"); //TODO replace wrong output text with exception
         }
 
-        if(roperand.matches("\\d+")){
+        if (roperand.matches("\\d+")) {
             val2 = Integer.parseInt(roperand);
-        } else if (variables.containsKey(roperand)){
+        } else if (variables.containsKey(roperand)) {
             val2 = variables.get(roperand);
-        } else{
+        } else {
             System.out.println("Wrong input"); //TODO replace wrong output text with exception
         }
 
@@ -76,7 +76,7 @@ public class PythonInterpreter {
 
     private static void handlePrint(String line) {
         String thingToPrint = line.substring(line.indexOf('(') + 1, line.indexOf(')')).trim();
-        if(thingToPrint.contains("+") || thingToPrint.contains("-") || thingToPrint.contains("*") || thingToPrint.contains("/") || thingToPrint.contains("%")){
+        if (thingToPrint.contains("+") || thingToPrint.contains("-") || thingToPrint.contains("*") || thingToPrint.contains("/") || thingToPrint.contains("%")) {
             int numToPrint = handleArithmeticOperation(thingToPrint);
             System.out.println(numToPrint);
         } else {
