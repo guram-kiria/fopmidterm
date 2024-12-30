@@ -8,6 +8,7 @@ public enum TokenType {
     WHILE,
     INDENT,
     DEDENT,
-    PARENTHESIS
+    PARENTHESIS,
+    NEWLINE
 }
 

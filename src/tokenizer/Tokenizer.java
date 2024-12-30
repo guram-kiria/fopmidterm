@@ -9,13 +9,12 @@ import java.util.regex.Pattern;
 public class Tokenizer {
     public static List<Token> tokenize(String input) {
         String tokenPatterns = String.join("|",
-                "(?<NUMBER>\\d+)",              // Integer number
-                "(?<IDENTIFIER>[a-zA-Z_]\\w*)", // Identifier (letters, underscores, and digits)
-                "(?<OPERATOR>[+\\-*/=<>:])",    // Operators (including <, >, +, -, *, /, =, etc.)
+                "(?<NUMBER>\\d+)",
+                "(?<IDENTIFIER>[a-zA-Z_]\\w*)",
+                "(?<OPERATOR>[+\\-*/=<>:])",
                 "(?<PARENTHESIS>[()])",
-//                "(?<INDENT>(?<=^|\\n)[ \\t]+)", // Single tab character as INDENT
                 "(?<SPACE>[ \\t]+)",
-                "(?<MISMATCH>.)"                // Any other character (unexpected)
+                "(?<MISMATCH>.)"
         );
 
         Pattern pattern = Pattern.compile(tokenPatterns);
@@ -61,6 +60,9 @@ public class Tokenizer {
                     tokens.add(new Token(TokenType.PARENTHESIS, matcher.group("PARENTHESIS")));
                 }
             }
+
+            tokens.add(new Token(TokenType.NEWLINE,"newline"));
+
         }
         return tokens;
     }
