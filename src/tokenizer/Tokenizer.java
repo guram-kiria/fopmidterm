@@ -51,6 +51,10 @@ public class Tokenizer {
                         tokens.add(new Token(TokenType.PRINT, "print"));
                     } else if ("while".equals(identifier)) {
                         tokens.add(new Token(TokenType.WHILE, "while"));
+                    } else if ("if".equals(identifier)){
+                        tokens.add(new Token(TokenType.IF, "if"));
+                    } else if ("else".equals(identifier)){
+                        tokens.add(new Token(TokenType.ELSE, "else"));
                     } else {
                         tokens.add(new Token(TokenType.IDENTIFIER, identifier));
                     }

@@ -9,6 +9,8 @@ public enum TokenType {
     INDENT,
     DEDENT,
     PARENTHESIS,
-    NEWLINE
+    NEWLINE,
+    IF,
+    ELSE
 }
 
