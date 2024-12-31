@@ -11,7 +11,7 @@ public class Tokenizer {
         String tokenPatterns = String.join("|",
                 "(?<NUMBER>\\d+)",
                 "(?<IDENTIFIER>[a-zA-Z_]\\w*)",
-                "(?<OPERATOR>[+\\-*/=<>:])",
+                "(?<OPERATOR>[+\\-*/=<>%:])",
                 "(?<PARENTHESIS>[()])",
                 "(?<SPACE>[ \\t]+)",
                 "(?<MISMATCH>.)"
