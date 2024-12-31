@@ -10,7 +10,11 @@ public class Parser {
     private static int tokenIterator = 0;
     private static boolean ifCondition = false;
 
-    public static void execute(List<Token> code) {
+    /**
+     * main method of the Parser class. Takes tokenized code as input and iterates over it for different functionality
+     * @param code
+     */
+    public static void execute(List<Token> code)    {
         tokenIterator = 0;
 
         while (tokenIterator < code.size()) {
@@ -95,6 +99,11 @@ public class Parser {
         }
     }
 
+    /**
+     * for boolean conditions, separates line into 3 pieces: left integer, right integer and operator it is checked with.
+     * @param code: copy of list of tokens
+     * @return A map where each key is a category (String) and the value is a list of tokens (List<Token>) belonging to that category.
+     */
     private static Map<String, List<Token>> getConditionParts(List<Token> code) {
         Map<String, List<Token>> parts = new HashMap<>();
 
@@ -132,6 +141,11 @@ public class Parser {
         return parts;
     }
 
+    /**
+     * executes block of for loops
+     * @param condition: condition that needs to be checked, divided in 3 parts
+     * @param block: list of tokens that need to be executed
+     */
     private static void executeBlock(Map<String, List<Token>> condition, List<Token> block) {
         List<Token> left = condition.get("leftExpression");
 
@@ -149,6 +163,13 @@ public class Parser {
 
     }
 
+    /**
+     * checks condition given operator and values on both sides of it.
+     * @param firstNum
+     * @param secondNum
+     * @param operator
+     * @return
+     */
     private static boolean checkCondition(int firstNum, int secondNum, List<Token> operator) {
         StringBuilder oper = new StringBuilder();
         for (Token token : operator) {
@@ -181,6 +202,11 @@ public class Parser {
         }
     }
 
+    /**
+     * extracts list that contains block elements from full list.
+     * @param code: copy of full list
+     * @return
+     */
     private static List<Token> getBlock(List<Token> code) {
         int iter = tokenIterator + 1;
         while (iter < code.size() && !code.get(iter).getType().equals(TokenType.DEDENT)) {
@@ -203,6 +229,11 @@ public class Parser {
 
     private static final Stack<Token> expressionTokens = new Stack<>();
 
+    /**
+     * evaluates expression
+     * @param expression: expression that needs to be evaluated
+     * @return result integer of evaluation
+     */
     private static Integer evaluateExpression(List<Token> expression) {
 
         // Create a defensive copy to avoid potential concurrent modification issues
@@ -267,6 +298,11 @@ public class Parser {
 
     }
 
+    /**
+     * retrieves elements from stack and performs operations on them
+     * @param currentNumValue: token that triggered evaluation
+     * @return single Token with result of evaluation as value to replace 3 stack elements: first number, operator and second number.
+     */
     private static Token calculateCurrentExpression(int currentNumValue) {
         int firstNum = 0;
         Token operator = expressionTokens.pop();
@@ -289,6 +325,12 @@ public class Parser {
         return new Token(TokenType.NUMBER, String.valueOf(currAns));
     }
 
+    /**
+     * extracts right side of = simbol in assignment operations to then work on it
+     * @param equalsIndex index of = symbol
+     * @param code code of full code
+     * @return list of tokens on the right side of =
+     */
     private static List<Token> findRightSideOfAssignment(int equalsIndex, List<Token> code) {
         int endIndex = equalsIndex;
         if (!code.get(equalsIndex).getValue().equals("=")) {
