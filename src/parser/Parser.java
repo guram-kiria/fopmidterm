@@ -2,17 +2,13 @@ package parser;
 
 import tokenizer.Token;
 import tokenizer.TokenType;
-
-import java.io.FilterOutputStream;
-import java.lang.ref.PhantomReference;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Parser {
 
     private static final Map<String, Integer> variables = new HashMap<>();
     private static int tokenIterator = 0;
-
+    private static boolean ifCondition = false;
 
     public static void execute(List<Token> code) {
         tokenIterator = 0;
@@ -58,13 +54,45 @@ public class Parser {
                 List<Token> block = getBlock(code);
 
                 executeBlock(parts, block);
+            }
+            else if (token.getType().equals(TokenType.IF)) {
+                Map<String, List<Token>> parts = getConditionParts(code);
+                List<Token> block = getBlock(code);
+
+                List<Token> left = parts.get("leftExpression");
+                List<Token> right = parts.get("rightExpression");
+                List<Token> operator = parts.get("operator");
+
+                ifCondition = checkCondition(evaluateExpression(left), evaluateExpression(right), operator);
+
+
+                if (ifCondition) {
+                    int storeIter = tokenIterator;
+                    execute(block);
+                    tokenIterator = storeIter - 1;
+                } else {
+                    tokenIterator --;
+                }
+
+            }
+            else if (token.getType().equals(TokenType.ELSE)) {
+                List<Token> elseBlock = getBlock(code);
+
+
+                if (!ifCondition) {
+                    int storeIter = tokenIterator;
+                    execute(elseBlock);
+                    tokenIterator = storeIter - 1;
+                } else {
+                    tokenIterator = tokenIterator + elseBlock.size() - 6;
+                }
+            } else if (token.getType().equals(TokenType.DEDENT)) {
+                tokenIterator++;
             } else {
-                System.out.println(token);
-                System.out.println("//////////////////////////////////////");
+                tokenIterator++;
             }
 
         }
-
     }
 
     private static Map<String, List<Token>> getConditionParts(List<Token> code) {
@@ -78,7 +106,7 @@ public class Parser {
         List<Token> condition = code.subList(tokenIterator + 1, iter);
 
         int expIter = 0;
-        while (expIter < condition.size() && !condition.get(expIter).getValue().matches("([<>=])")) {
+        while (expIter < condition.size() && !condition.get(expIter).getValue().matches("([<>=!])")) {
             expIter++;
         }
 
@@ -159,7 +187,7 @@ public class Parser {
             iter++;
         }
         List<Token> block = code.subList(tokenIterator + 2, iter);
-        tokenIterator = iter;
+        tokenIterator = iter + 1;
 
         // Create a copy of the block list to avoid concurrent modification
         List<Token> blockCopy = new ArrayList<>(block);
@@ -182,7 +210,7 @@ public class Parser {
 
         // Check size using the copy to avoid modifying the original list
         if (expressionCopy.size() == 1) {
-            Token firstToken = expressionCopy.get(0);
+            Token firstToken = expressionCopy.getFirst();
             if (firstToken.getType().equals(TokenType.NUMBER)) {
                 return Integer.parseInt(firstToken.getValue());
             } else if (firstToken.getType().equals(TokenType.IDENTIFIER)) {
@@ -274,20 +302,4 @@ public class Parser {
         tokenIterator = endIndex;
         return code.subList(equalsIndex + 1, endIndex);
     }
-
-//    private static int findMatchingParenthesis(List<Token> code, int startIndex) {
-//        int count = 1;
-//        for (int i = startIndex + 1; i < code.size(); i++) {
-//            if (code.get(i).getType().equals(TokenType.PARENTHESIS) && code.get(i).getValue().equals("(")) {
-//                count++;
-//            } else if (code.get(i).getType().equals(TokenType.PARENTHESIS) && code.get(i).getValue().equals(")")) {
-//                count--;
-//                if (count == 0) {
-//                    return i;
-//                }
-//            }
-//        }
-//
-//        throw new RuntimeException("Unmatched parenthesis");
-//    }
 }
