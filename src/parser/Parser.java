@@ -248,6 +248,7 @@ public class Parser {
             case "-" -> currAns = currentNumValue - firstNum;
             case "*" -> currAns = currentNumValue * firstNum;
             case "/" -> currAns = currentNumValue / firstNum;
+            case "%" -> currAns = currentNumValue % firstNum;
         }
 
         return new Token(TokenType.NUMBER, String.valueOf(currAns));
