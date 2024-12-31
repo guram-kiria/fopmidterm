@@ -21,9 +21,9 @@ public class Tokenizer {
         List<Token> tokens = new ArrayList<>();
 
         Stack<Integer> indentStack = new Stack<>();
-        indentStack.push(0); // Ini
+        indentStack.push(0);
 
-        for(String line : input.split("\n")){
+        for (String line : input.split("\n")) {
             Matcher matcher = pattern.matcher(line);
 
             int currentIndent = calculateIndent(line);
@@ -51,9 +51,9 @@ public class Tokenizer {
                         tokens.add(new Token(TokenType.PRINT, "print"));
                     } else if ("while".equals(identifier)) {
                         tokens.add(new Token(TokenType.WHILE, "while"));
-                    } else if ("if".equals(identifier)){
+                    } else if ("if".equals(identifier)) {
                         tokens.add(new Token(TokenType.IF, "if"));
-                    } else if ("else".equals(identifier)){
+                    } else if ("else".equals(identifier)) {
                         tokens.add(new Token(TokenType.ELSE, "else"));
                     } else {
                         tokens.add(new Token(TokenType.IDENTIFIER, identifier));
@@ -65,7 +65,7 @@ public class Tokenizer {
                 }
             }
 
-            tokens.add(new Token(TokenType.NEWLINE,"newline"));
+            tokens.add(new Token(TokenType.NEWLINE, "newline"));
 
         }
         return tokens;
