@@ -221,7 +221,6 @@ public class Parser {
 
         for (Token token : expressionCopy) {
 
-            //token.getType().equals(TokenType.OPERATOR) && !token.getValue().equals("=") ||
             if (token.getType().equals(TokenType.NUMBER) || token.getType().equals(TokenType.IDENTIFIER) || token.getType().equals(TokenType.OPERATOR)) {
                 if (expressionTokens.isEmpty() && ((token.getType().equals(TokenType.IDENTIFIER) || token.getType().equals(TokenType.NUMBER)))) {
                     expressionTokens.push(token);

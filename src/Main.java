@@ -1,14 +1,7 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) {
-        List<Token> list = new ArrayList<>();
-        String code = "print (1 + 5)";
-        list = Tokenizer.tokenize(code);
-
-
-        int ans = Parser.parseAndEvaluate(list);
-        System.out.println(ans);
+    public static void main(String[] args) throws IOException {
+        PythonInterpreter.exec(""); //path to python file
     }
 }
